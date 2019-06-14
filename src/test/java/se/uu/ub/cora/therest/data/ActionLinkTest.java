@@ -19,11 +19,12 @@
 
 package se.uu.ub.cora.therest.data;
 
-import org.testng.annotations.Test;
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.therest.testdata.DataCreator;
-
 import static org.testng.Assert.assertEquals;
+
+import org.testng.annotations.Test;
+
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.therest.testdata.DataCreator;
 
 public class ActionLinkTest {
 	@Test
@@ -61,12 +62,11 @@ public class ActionLinkTest {
 	}
 
 	@Test
-	public void testBody(){
+	public void testBody() {
 		ActionLink actionLink = ActionLink.withAction(Action.READ);
 		RestDataGroup workOrder = DataCreator.createWorkOrder();
 		actionLink.setBody(workOrder);
-		assertEquals(actionLink.getBody(),workOrder);
+		assertEquals(actionLink.getBody(), workOrder);
 	}
-
 
 }

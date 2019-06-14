@@ -20,16 +20,16 @@ package se.uu.ub.cora.therest.data.converter.spider;
 
 import java.util.List;
 
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public interface SpiderToRestConverterFactory {
 
-	SpiderToRestConverter factorForSpiderDataGroupWithConverterInfo(SpiderDataGroup spiderDataGroup,
+	SpiderToRestConverter factorForSpiderDataGroupWithConverterInfo(DataGroup spiderDataGroup,
 			ConverterInfo converterInfo);
 
 	ActionSpiderToRestConverter factorForActionsUsingConverterInfoAndDataGroup(List<Action> actions,
-			ConverterInfo converterInfo, SpiderDataGroup spiderDataGroup);
+			ConverterInfo converterInfo, DataGroup spiderDataGroup);
 
 }

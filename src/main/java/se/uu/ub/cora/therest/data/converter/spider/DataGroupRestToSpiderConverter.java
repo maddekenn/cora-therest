@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Uppsala University Library
+ * Copyright 2015, 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -19,19 +19,19 @@
 
 package se.uu.ub.cora.therest.data.converter.spider;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 import se.uu.ub.cora.therest.data.RestDataElement;
 import se.uu.ub.cora.therest.data.RestDataGroup;
 import se.uu.ub.cora.therest.data.converter.ConverterException;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 public final class DataGroupRestToSpiderConverter {
 	private RestDataGroup restDataGroup;
-	private SpiderDataGroup spiderDataGroup;
+	private DataGroup spiderDataGroup;
 
 	public static DataGroupRestToSpiderConverter fromRestDataGroup(RestDataGroup restDataGroup) {
 		return new DataGroupRestToSpiderConverter(restDataGroup);
@@ -41,7 +41,7 @@ public final class DataGroupRestToSpiderConverter {
 		this.restDataGroup = restDataGroup;
 	}
 
-	public SpiderDataGroup toSpider() {
+	public DataGroup toSpider() {
 		try {
 			return tryToSpiderate();
 		} catch (ClassCastException e) {
@@ -50,8 +50,8 @@ public final class DataGroupRestToSpiderConverter {
 		}
 	}
 
-	private SpiderDataGroup tryToSpiderate() {
-		spiderDataGroup = SpiderDataGroup.withNameInData(restDataGroup.getNameInData());
+	private DataGroup tryToSpiderate() {
+		spiderDataGroup = DataGroup.withNameInData(restDataGroup.getNameInData());
 		spiderDataGroup.setRepeatId(restDataGroup.getRepeatId());
 		addAttributesToSpiderGroup();
 		addChildrenToSpiderGroup();
@@ -80,13 +80,13 @@ public final class DataGroupRestToSpiderConverter {
 	}
 
 	private void addGroupChild(RestDataElement restDataElement) {
-		SpiderDataGroup spiderDataGroupChild = DataGroupRestToSpiderConverter
+		DataGroup spiderDataGroupChild = DataGroupRestToSpiderConverter
 				.fromRestDataGroup((RestDataGroup) restDataElement).toSpider();
 		spiderDataGroup.addChild(spiderDataGroupChild);
 	}
 
 	private void addAtomicChild(RestDataElement restDataElement) {
-		SpiderDataAtomic spiderDataAtomic = DataAtomicRestToSpiderConverter
+		DataAtomic spiderDataAtomic = DataAtomicRestToSpiderConverter
 				.fromRestDataAtomic((RestDataAtomic) restDataElement).toSpider();
 		spiderDataGroup.addChild(spiderDataAtomic);
 	}

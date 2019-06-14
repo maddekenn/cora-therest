@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Uppsala University Library
+ * Copyright 2015, 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -19,7 +19,7 @@
 
 package se.uu.ub.cora.therest.data.converter.spider;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
+import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 
 public final class DataAtomicRestToSpiderConverter {
@@ -35,8 +35,8 @@ public final class DataAtomicRestToSpiderConverter {
 		this.restDataAtomic = restDataAtomic;
 	}
 
-	public SpiderDataAtomic toSpider() {
-		SpiderDataAtomic spiderDataAtomic = SpiderDataAtomic
+	public DataAtomic toSpider() {
+		DataAtomic spiderDataAtomic = DataAtomic
 				.withNameInDataAndValue(restDataAtomic.getNameInData(), restDataAtomic.getValue());
 		spiderDataAtomic.setRepeatId(restDataAtomic.getRepeatId());
 		return spiderDataAtomic;
