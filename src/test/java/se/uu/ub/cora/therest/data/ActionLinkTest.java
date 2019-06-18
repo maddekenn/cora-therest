@@ -62,7 +62,7 @@ public class ActionLinkTest {
 	}
 
 	@Test
-	public void testBody() {
+	public void testBody(){
 		ActionLink actionLink = ActionLink.withAction(Action.READ);
 		RestDataGroup workOrder = DataCreator.createWorkOrder();
 		actionLink.setBody(workOrder);

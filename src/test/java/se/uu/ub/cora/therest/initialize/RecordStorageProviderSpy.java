@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Uppsala University Library
+ * Copyright 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -16,19 +16,34 @@
  *     You should have received a copy of the GNU General Public License
  *     along with Cora.  If not, see <http://www.gnu.org/licenses/>.
  */
+package se.uu.ub.cora.therest.initialize;
 
-package se.uu.ub.cora.therest.record;
+import java.util.Map;
 
-import se.uu.ub.cora.storage.RecordIdGenerator;
+import se.uu.ub.cora.storage.RecordStorage;
+import se.uu.ub.cora.storage.RecordStorageProvider;
 
-public class IdGeneratorSpy implements RecordIdGenerator {
+public class RecordStorageProviderSpy implements RecordStorageProvider {
 
-	public boolean getIdForTypeWasCalled = false;
+	public Map<String, String> initInfo;
+	boolean started = false;
+	RecordStorageSpy recordStorageSpy = new RecordStorageSpy();
 
 	@Override
-	public String getIdForType(String type) {
-		getIdForTypeWasCalled = true;
-		return "1";
+	public int getOrderToSelectImplementionsBy() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void startUsingInitInfo(Map<String, String> initInfo) {
+		started = true;
+		this.initInfo = initInfo;
+	}
+
+	@Override
+	public RecordStorage getRecordStorage() {
+		return recordStorageSpy;
 	}
 
 }
