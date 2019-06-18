@@ -26,11 +26,7 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-<<<<<<< HEAD
 import se.uu.ub.cora.data.Action;
-=======
-import se.uu.ub.cora.spider.data.Action;
->>>>>>> refs/remotes/origin/master
 
 public class RestDataRecordLinkTest {
 	private RestDataRecordLink recordLink;

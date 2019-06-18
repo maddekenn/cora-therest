@@ -20,7 +20,7 @@ package se.uu.ub.cora.therest.initialize;
 
 import java.util.Collection;
 
-import se.uu.ub.cora.bookkeeper.data.DataGroup;
+import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.storage.RecordStorage;
 import se.uu.ub.cora.storage.SearchStorage;
 import se.uu.ub.cora.storage.SpiderReadResult;

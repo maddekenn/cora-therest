@@ -45,7 +45,7 @@
 		<httphandler.version>1.0.0</httphandler.version>
 		
 		<logger.version>1.0.0</logger.version>
-		<storage.version>1.0.0</storage.version>
+		<storage.version>1.1-SNAPSHOT</storage.version>
 		
 		<coralog4j.version>1.0.0</coralog4j.version>
 		

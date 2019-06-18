@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Uppsala University Library
+ * Copyright 2016, 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -19,8 +19,9 @@
 
 package se.uu.ub.cora.therest.record;
 
+import se.uu.ub.cora.data.DataGroup;
+import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.spider.authorization.AuthorizationException;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
 import se.uu.ub.cora.spider.data.SpiderDataRecord;
 import se.uu.ub.cora.spider.record.DataException;
 import se.uu.ub.cora.spider.record.MisuseException;
@@ -33,30 +34,29 @@ public class SpiderCreatorSpy implements SpiderRecordCreator {
 
 	public String authToken;
 	public String type;
-	public SpiderDataGroup record;
+	public DataGroup record;
 
 	@Override
-	public SpiderDataRecord createAndStoreRecord(String authToken, String type,
-			SpiderDataGroup record) {
+	public DataRecord createAndStoreRecord(String authToken, String type, DataGroup record) {
 		this.authToken = authToken;
 		this.type = type;
 		this.record = record;
-		if("dummyNonAuthorizedToken".equals(authToken)){
+		if ("dummyNonAuthorizedToken".equals(authToken)) {
 			throw new AuthorizationException("not authorized");
 		}
-		if("recordType_NON_EXISTING".equals(type)){
+		if ("recordType_NON_EXISTING".equals(type)) {
 			throw new RecordNotFoundException("no record exist with type " + type);
-		}else if("place_NON_VALID".equals(type)){
+		} else if ("place_NON_VALID".equals(type)) {
 			throw new DataException("Data is not valid");
-		}else if ("abstract".equals(type)) {
+		} else if ("abstract".equals(type)) {
 			throw new MisuseException(
 					"Data creation on abstract recordType:" + type + " is not allowed");
-		}else if("place_duplicate".equals(type)){
+		} else if ("place_duplicate".equals(type)) {
 			throw new RecordConflictException("Record already exists");
-		}else if("place_unexpected_error".equals(type)){
+		} else if ("place_unexpected_error".equals(type)) {
 			throw new NullPointerException("Some error");
 		}
-		return SpiderDataRecord.withSpiderDataGroup(
+		return SpiderDataRecord.withDataGroup(
 				DataCreator.createRecordWithNameInDataAndIdAndTypeAndLinkedRecordId("nameInData",
 						"someId", type, "linkedRecordId"));
 	}
