@@ -24,16 +24,16 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
+import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 
 public class DataAtomicSpiderToRestConverterTest {
-	private SpiderDataAtomic spiderDataAtomic;
+	private DataAtomic spiderDataAtomic;
 	private DataAtomicSpiderToRestConverter atomicSpiderToRestConverter;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataAtomic = SpiderDataAtomic.withNameInDataAndValue("nameInData", "value");
+		spiderDataAtomic = DataAtomic.withNameInDataAndValue("nameInData", "value");
 		atomicSpiderToRestConverter = DataAtomicSpiderToRestConverter
 				.fromSpiderDataAtomic(spiderDataAtomic);
 

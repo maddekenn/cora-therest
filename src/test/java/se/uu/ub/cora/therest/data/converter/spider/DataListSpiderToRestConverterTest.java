@@ -23,10 +23,10 @@ import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
-import se.uu.ub.cora.spider.data.SpiderDataList;
-import se.uu.ub.cora.spider.data.SpiderDataRecord;
+import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.DataGroup;
+import se.uu.ub.cora.data.DataList;
+import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.therest.data.RestDataGroup;
 import se.uu.ub.cora.therest.data.RestDataList;
 import se.uu.ub.cora.therest.data.RestDataRecord;
@@ -36,10 +36,10 @@ public class DataListSpiderToRestConverterTest {
 
 	@Test
 	public void testToRest() {
-		SpiderDataGroup spiderDataGroup = SpiderDataGroup.withNameInData("groupId");
+		DataGroup spiderDataGroup = DataGroup.withNameInData("groupId");
 		spiderDataGroup.addChild(createRecordInfo());
-		SpiderDataRecord spiderDataRecord = SpiderDataRecord.withSpiderDataGroup(spiderDataGroup);
-		SpiderDataList spiderDataList = SpiderDataList.withContainDataOfType("place");
+		DataRecord spiderDataRecord = DataRecord.withDataGroup(spiderDataGroup);
+		DataList spiderDataList = DataList.withContainDataOfType("place");
 		spiderDataList.addData(spiderDataRecord);
 		spiderDataList.setTotalNo("10");
 		spiderDataList.setFromNo("1");
@@ -60,23 +60,22 @@ public class DataListSpiderToRestConverterTest {
 		assertEquals(restDataGroup.getNameInData(), "groupId");
 	}
 
-	private SpiderDataGroup createRecordInfo() {
-		SpiderDataGroup recordInfo = SpiderDataGroup.withNameInData("recordInfo");
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("id", "place:0001"));
-		SpiderDataGroup typeGroup = SpiderDataGroup.withNameInData("type");
-		typeGroup.addChild(
-				SpiderDataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
-		typeGroup.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", "place"));
+	private DataGroup createRecordInfo() {
+		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "place:0001"));
+		DataGroup typeGroup = DataGroup.withNameInData("type");
+		typeGroup.addChild(DataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
+		typeGroup.addChild(DataAtomic.withNameInDataAndValue("linkedRecordId", "place"));
 		recordInfo.addChild(typeGroup);
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("createdBy", "userId"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
 		return recordInfo;
 	}
 
 	@Test
 	public void testToRestWithGroup() {
-		SpiderDataGroup spiderDataGroup = SpiderDataGroup.withNameInData("groupId");
+		DataGroup spiderDataGroup = DataGroup.withNameInData("groupId");
 		spiderDataGroup.addChild(createRecordInfo());
-		SpiderDataList spiderDataList = SpiderDataList.withContainDataOfType("place");
+		DataList spiderDataList = DataList.withContainDataOfType("place");
 		spiderDataList.addData(spiderDataGroup);
 		spiderDataList.setTotalNo("10");
 		spiderDataList.setFromNo("1");

@@ -24,7 +24,7 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
+import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 
 public class DataAtomicRestToSpiderConverterTest {
@@ -40,7 +40,7 @@ public class DataAtomicRestToSpiderConverterTest {
 
 	@Test
 	public void testToSpider() {
-		SpiderDataAtomic spiderDataAtomic = converter.toSpider();
+		DataAtomic spiderDataAtomic = converter.toSpider();
 		assertEquals(spiderDataAtomic.getNameInData(), "nameInData");
 		assertEquals(spiderDataAtomic.getValue(), "value");
 	}
@@ -48,7 +48,7 @@ public class DataAtomicRestToSpiderConverterTest {
 	@Test
 	public void testToSpiderWithRepeatId() {
 		restDataAtomic.setRepeatId("x3");
-		SpiderDataAtomic spiderDataAtomic = converter.toSpider();
+		DataAtomic spiderDataAtomic = converter.toSpider();
 		assertEquals(spiderDataAtomic.getNameInData(), "nameInData");
 		assertEquals(spiderDataAtomic.getValue(), "value");
 		assertEquals(spiderDataAtomic.getRepeatId(), "x3");

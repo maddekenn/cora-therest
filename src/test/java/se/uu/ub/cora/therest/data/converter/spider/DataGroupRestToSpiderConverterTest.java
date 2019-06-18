@@ -24,8 +24,8 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
+import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 import se.uu.ub.cora.therest.data.RestDataAttribute;
 import se.uu.ub.cora.therest.data.RestDataGroup;
@@ -45,14 +45,14 @@ public class DataGroupRestToSpiderConverterTest {
 
 	@Test
 	public void testToSpider() {
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 		assertEquals(spiderDataGroup.getNameInData(), "nameInData");
 	}
 
 	@Test
 	public void testToSpiderWithRepeatId() {
 		restDataGroup.setRepeatId("34");
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 		assertEquals(spiderDataGroup.getNameInData(), "nameInData");
 		assertEquals(spiderDataGroup.getRepeatId(), "34");
 	}
@@ -61,7 +61,7 @@ public class DataGroupRestToSpiderConverterTest {
 	public void testToSpiderWithAttribute() {
 		restDataGroup.addAttributeByIdWithValue("attributeId", "attributeValue");
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
 		String attributeValue = spiderDataGroup.getAttributes().get("attributeId");
 		assertEquals(attributeValue, "attributeValue");
@@ -71,9 +71,9 @@ public class DataGroupRestToSpiderConverterTest {
 	public void testToSpiderWithAtomicChild() {
 		restDataGroup.addChild(RestDataAtomic.withNameInDataAndValue("atomicId", "atomicValue"));
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
-		SpiderDataAtomic atomicChild = (SpiderDataAtomic) spiderDataGroup.getChildren().get(0);
+		DataAtomic atomicChild = (DataAtomic) spiderDataGroup.getChildren().get(0);
 		assertEquals(atomicChild.getNameInData(), "atomicId");
 		assertEquals(atomicChild.getValue(), "atomicValue");
 	}
@@ -81,20 +81,25 @@ public class DataGroupRestToSpiderConverterTest {
 	@Test
 	public void testToSpiderWithRecordLinkChild() {
 		RestDataRecordLink restDataRecordLink = RestDataRecordLink.withNameInData("aLink");
-		RestDataAtomic linkedRecordTypeChild = RestDataAtomic.withNameInDataAndValue("linkedRecordType", "someRecordType");
+		RestDataAtomic linkedRecordTypeChild = RestDataAtomic
+				.withNameInDataAndValue("linkedRecordType", "someRecordType");
 		restDataRecordLink.addChild(linkedRecordTypeChild);
 
-		RestDataAtomic linkedRecordIdChild = RestDataAtomic.withNameInDataAndValue("linkedRecordId", "someRecordId");
+		RestDataAtomic linkedRecordIdChild = RestDataAtomic.withNameInDataAndValue("linkedRecordId",
+				"someRecordId");
 		restDataRecordLink.addChild(linkedRecordIdChild);
 		restDataGroup.addChild(restDataRecordLink);
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
-		SpiderDataGroup spiderDataRecordLink = (SpiderDataGroup)spiderDataGroup.getFirstChildWithNameInData("aLink");
+		DataGroup spiderDataRecordLink = (DataGroup) spiderDataGroup
+				.getFirstChildWithNameInData("aLink");
 		assertEquals(spiderDataRecordLink.getNameInData(), "aLink");
 
-		SpiderDataAtomic linkedRecordType = (SpiderDataAtomic)spiderDataRecordLink.getFirstChildWithNameInData("linkedRecordType");
-		SpiderDataAtomic linkedRecordId = (SpiderDataAtomic)spiderDataRecordLink.getFirstChildWithNameInData("linkedRecordId");
+		DataAtomic linkedRecordType = (DataAtomic) spiderDataRecordLink
+				.getFirstChildWithNameInData("linkedRecordType");
+		DataAtomic linkedRecordId = (DataAtomic) spiderDataRecordLink
+				.getFirstChildWithNameInData("linkedRecordId");
 
 		assertEquals(linkedRecordType.getValue(), "someRecordType");
 		assertEquals(linkedRecordId.getValue(), "someRecordId");
@@ -104,9 +109,9 @@ public class DataGroupRestToSpiderConverterTest {
 	public void testToSpiderWithGroupChild() {
 		restDataGroup.addChild(RestDataGroup.withNameInData("groupId"));
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
-		SpiderDataGroup groupChild = (SpiderDataGroup) spiderDataGroup.getChildren().get(0);
+		DataGroup groupChild = (DataGroup) spiderDataGroup.getChildren().get(0);
 		assertEquals(groupChild.getNameInData(), "groupId");
 	}
 
@@ -119,10 +124,10 @@ public class DataGroupRestToSpiderConverterTest {
 				"groupChildAttributeValue");
 		restDataGroup.addChild(restGroupChild);
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
-		SpiderDataGroup groupChild = (SpiderDataGroup) spiderDataGroup.getChildren().get(0);
-		SpiderDataAtomic grandChildAtomic = (SpiderDataAtomic) groupChild.getChildren().get(0);
+		DataGroup groupChild = (DataGroup) spiderDataGroup.getChildren().get(0);
+		DataAtomic grandChildAtomic = (DataAtomic) groupChild.getChildren().get(0);
 		assertEquals(grandChildAtomic.getNameInData(), "grandChildAtomicId");
 		String groupChildAttributeValue = restGroupChild.getAttributes()
 				.get("groupChildAttributeId");
@@ -133,9 +138,9 @@ public class DataGroupRestToSpiderConverterTest {
 	public void testToSpiderWithAttributeAsChild() {
 		restDataGroup.addChild(RestDataAttribute.withNameInDataAndValue("atomicId", "atomicValue"));
 
-		SpiderDataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
+		DataGroup spiderDataGroup = dataGroupRestToSpiderConverter.toSpider();
 
-		SpiderDataAtomic atomicChild = (SpiderDataAtomic) spiderDataGroup.getChildren().get(0);
+		DataAtomic atomicChild = (DataAtomic) spiderDataGroup.getChildren().get(0);
 		assertEquals(atomicChild.getNameInData(), "atomicId");
 		assertEquals(atomicChild.getValue(), "atomicValue");
 	}

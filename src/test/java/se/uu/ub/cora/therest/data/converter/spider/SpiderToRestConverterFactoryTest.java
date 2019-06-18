@@ -26,15 +26,15 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public class SpiderToRestConverterFactoryTest {
 
 	@Test
 	public void testFactorForDataGroup() {
-		SpiderDataGroup spiderDataGroup = SpiderDataGroup.withNameInData("someDataGroup");
+		DataGroup spiderDataGroup = DataGroup.withNameInData("someDataGroup");
 		ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 				"someBaseUrl", "someRecordUrl", "someRecordType", "someRecordId");
 		SpiderToRestConverterFactory factory = new SpiderToRestConverterFactoryImp();
@@ -51,7 +51,7 @@ public class SpiderToRestConverterFactoryTest {
 		Action action = Action.READ;
 		actions.add(action);
 
-		SpiderDataGroup spiderDataGroup = SpiderDataGroup.withNameInData("someDataGroup");
+		DataGroup spiderDataGroup = DataGroup.withNameInData("someDataGroup");
 		ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 				"someBaseUrl", "someRecordUrl", "someRecordType", "someRecordId");
 		SpiderToRestConverterFactory factory = new SpiderToRestConverterFactoryImp();
