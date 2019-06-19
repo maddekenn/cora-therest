@@ -24,9 +24,9 @@ import static org.testng.Assert.assertEquals;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataResourceLink;
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.DataResourceLink;
 import se.uu.ub.cora.therest.data.ActionLink;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 import se.uu.ub.cora.therest.data.RestDataResourceLink;
@@ -36,17 +36,16 @@ public class DataResourceLinkSpiderToRestConverterTest {
 	private ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 			"http://localhost:8080/therest/rest/record/",
 			"http://localhost:8080/therest/rest/record/image/someImageId", "image", "someImageId");
-	private SpiderDataResourceLink spiderDataResourceLink;
+	private DataResourceLink spiderDataResourceLink;
 	private DataResourceLinkSpiderToRestConverter dataResourceLinkSpiderToRestConverter;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataResourceLink = SpiderDataResourceLink.withNameInData("master");
+		spiderDataResourceLink = DataResourceLink.withNameInData("master");
 
+		spiderDataResourceLink.addChild(DataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
 		spiderDataResourceLink
-				.addChild(SpiderDataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
-		spiderDataResourceLink
-				.addChild(SpiderDataAtomic.withNameInDataAndValue("mimeType", "application/png"));
+				.addChild(DataAtomic.withNameInDataAndValue("mimeType", "application/png"));
 
 		dataResourceLinkSpiderToRestConverter = DataResourceLinkSpiderToRestConverter
 				.fromSpiderDataResourceLinkWithConverterInfo(spiderDataResourceLink, converterInfo);

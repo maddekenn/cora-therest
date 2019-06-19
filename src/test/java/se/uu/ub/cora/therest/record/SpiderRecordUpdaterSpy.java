@@ -19,9 +19,9 @@
 
 package se.uu.ub.cora.therest.record;
 
+import se.uu.ub.cora.data.DataGroup;
+import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.spider.authorization.AuthorizationException;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
-import se.uu.ub.cora.spider.data.SpiderDataRecord;
 import se.uu.ub.cora.spider.record.SpiderRecordUpdater;
 import se.uu.ub.cora.spider.record.storage.RecordNotFoundException;
 import se.uu.ub.cora.therest.testdata.DataCreator;
@@ -31,29 +31,28 @@ public class SpiderRecordUpdaterSpy implements SpiderRecordUpdater {
 	public String authToken;
 	public String type;
 	public String id;
-	public SpiderDataGroup record;
+	public DataGroup record;
 
 	@Override
-	public SpiderDataRecord updateRecord(String authToken, String type, String id,
-			SpiderDataGroup record) {
+	public DataRecord updateRecord(String authToken, String type, String id, DataGroup record) {
 		this.authToken = authToken;
 		this.type = type;
 		this.id = id;
 		this.record = record;
 		possiblyThrowException(authToken, type, id);
-		return SpiderDataRecord.withSpiderDataGroup(
+		return DataRecord.withDataGroup(
 				DataCreator.createRecordWithNameInDataAndIdAndTypeAndLinkedRecordId("nameInData",
 						id, type, "linkedRecordId"));
 	}
 
 	private void possiblyThrowException(String authToken, String type, String id) {
-		if("dummyNonAuthorizedToken".equals(authToken)){
+		if ("dummyNonAuthorizedToken".equals(authToken)) {
 			throw new AuthorizationException("not authorized");
 		}
-		if("place:0001_NOT_FOUND".equals(id)){
+		if ("place:0001_NOT_FOUND".equals(id)) {
 			throw new RecordNotFoundException("no record exist with id " + id);
 		}
-		if("place_NOT_FOUND".equals(type)){
+		if ("place_NOT_FOUND".equals(type)) {
 			throw new RecordNotFoundException("no record exist with type " + type);
 		}
 	}

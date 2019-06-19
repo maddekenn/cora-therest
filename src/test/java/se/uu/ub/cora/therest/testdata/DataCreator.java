@@ -19,11 +19,10 @@
 
 package se.uu.ub.cora.therest.testdata;
 
+import se.uu.ub.cora.data.Action;
 import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.data.DataGroup;
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataResourceLink;
+import se.uu.ub.cora.data.DataResourceLink;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 import se.uu.ub.cora.therest.data.RestDataGroup;
 import se.uu.ub.cora.therest.record.DataRecordLinkCollectorSpy;
@@ -279,21 +278,20 @@ public final class DataCreator {
 	public static DataGroup createMetadataGroupWithCollectionVariableAsChild() {
 		DataGroup spiderDataGroup = DataGroup.withNameInData("metadata");
 		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("id", "testCollectionVar"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "testCollectionVar"));
 		DataGroup type = DataGroup.withNameInData("type");
-		type.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
-		type.addChild(
-				SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", "collectionVariable"));
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordId", "collectionVariable"));
 		recordInfo.addChild(type);
 
 		recordInfo.addChild(createDataDividerWithLinkedRecordId("test"));
 		spiderDataGroup.addChild(recordInfo);
 
 		DataGroup refCollection = DataGroup.withNameInData("refCollection");
-		refCollection.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordType",
-				"metadataItemCollection"));
 		refCollection.addChild(
-				SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", "testItemCollection"));
+				DataAtomic.withNameInDataAndValue("linkedRecordType", "metadataItemCollection"));
+		refCollection.addChild(
+				DataAtomic.withNameInDataAndValue("linkedRecordId", "testItemCollection"));
 		spiderDataGroup.addChild(refCollection);
 
 		return spiderDataGroup;
@@ -302,10 +300,10 @@ public final class DataCreator {
 	public static DataGroup createMetadataGroupWithRecordLinkAsChild() {
 		DataGroup spiderDataGroup = DataGroup.withNameInData("metadata");
 		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("id", "testRecordLink"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "testRecordLink"));
 		DataGroup type = DataGroup.withNameInData("type");
-		type.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
-		type.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", "recordLink"));
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordId", "recordLink"));
 		recordInfo.addChild(type);
 
 		recordInfo.addChild(createDataDividerWithLinkedRecordId("test"));
@@ -314,12 +312,12 @@ public final class DataCreator {
 		return spiderDataGroup;
 	}
 
-	public static SpiderDataResourceLink createResourceLinkMaster() {
-		SpiderDataResourceLink master = SpiderDataResourceLink.withNameInData("master");
-		master.addChild(SpiderDataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
-		master.addChild(SpiderDataAtomic.withNameInDataAndValue("filename", "aFilename"));
-		master.addChild(SpiderDataAtomic.withNameInDataAndValue("filesize", "1234"));
-		master.addChild(SpiderDataAtomic.withNameInDataAndValue("mimeType", "application/tiff"));
+	public static DataResourceLink createResourceLinkMaster() {
+		DataResourceLink master = DataResourceLink.withNameInData("master");
+		master.addChild(DataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
+		master.addChild(DataAtomic.withNameInDataAndValue("filename", "aFilename"));
+		master.addChild(DataAtomic.withNameInDataAndValue("filesize", "1234"));
+		master.addChild(DataAtomic.withNameInDataAndValue("mimeType", "application/tiff"));
 		master.addAction(Action.READ);
 		return master;
 	}

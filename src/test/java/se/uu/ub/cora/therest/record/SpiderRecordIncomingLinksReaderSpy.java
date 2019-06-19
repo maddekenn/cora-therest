@@ -19,8 +19,8 @@
 
 package se.uu.ub.cora.therest.record;
 
+import se.uu.ub.cora.data.DataList;
 import se.uu.ub.cora.spider.authorization.AuthorizationException;
-import se.uu.ub.cora.spider.data.SpiderDataList;
 import se.uu.ub.cora.spider.record.MisuseException;
 import se.uu.ub.cora.spider.record.SpiderRecordIncomingLinksReader;
 import se.uu.ub.cora.spider.record.storage.RecordNotFoundException;
@@ -32,12 +32,12 @@ public class SpiderRecordIncomingLinksReaderSpy implements SpiderRecordIncomingL
 	public String id;
 
 	@Override
-	public SpiderDataList readIncomingLinks(String authToken, String type, String id) {
+	public DataList readIncomingLinks(String authToken, String type, String id) {
 		this.authToken = authToken;
 		this.type = type;
 		this.id = id;
 		possiblyThrowExceptionForIncomingLinks(authToken, type, id);
-		return SpiderDataList.withContainDataOfType("someType");
+		return DataList.withContainDataOfType("someType");
 	}
 
 	private void possiblyThrowExceptionForIncomingLinks(String authToken, String type, String id) {

@@ -26,24 +26,24 @@ import static org.testng.Assert.assertTrue;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import se.uu.ub.cora.spider.data.Action;
-import se.uu.ub.cora.spider.data.SpiderDataAtomic;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
-import se.uu.ub.cora.spider.data.SpiderDataRecord;
+import se.uu.ub.cora.data.Action;
+import se.uu.ub.cora.data.DataAtomic;
+import se.uu.ub.cora.data.DataGroup;
+import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.therest.data.RestDataRecord;
 import se.uu.ub.cora.therest.data.converter.ConverterException;
 
 public class DataRecordSpiderToRestConverterTest {
 	private String baseURL = "http://localhost:8080/therest/rest/record/";
-	private SpiderDataGroup spiderDataGroup;
-	private SpiderDataRecord spiderDataRecord;
+	private DataGroup spiderDataGroup;
+	private DataRecord spiderDataRecord;
 	private DataRecordSpiderToRestConverter dataRecordSpiderToRestConverter;
 	private SpiderToRestConverterFactorySpy converterFactory;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataGroup = SpiderDataGroup.withNameInData("someNameInData");
-		spiderDataRecord = SpiderDataRecord.withSpiderDataGroup(spiderDataGroup);
+		spiderDataGroup = DataGroup.withNameInData("someNameInData");
+		spiderDataRecord = DataRecord.withDataGroup(spiderDataGroup);
 		converterFactory = new SpiderToRestConverterFactorySpy();
 		dataRecordSpiderToRestConverter = DataRecordSpiderToRestConverter
 				.fromSpiderDataRecordWithBaseURLAndConverterFactory(spiderDataRecord, baseURL,
@@ -66,7 +66,7 @@ public class DataRecordSpiderToRestConverterTest {
 
 	@Test(expectedExceptions = ConverterException.class)
 	public void testToRestWithActionLinkNoRecordInfoButOtherChild() {
-		spiderDataGroup.addChild(SpiderDataAtomic.withNameInDataAndValue("type", "place"));
+		spiderDataGroup.addChild(DataAtomic.withNameInDataAndValue("type", "place"));
 		spiderDataRecord.addAction(Action.READ);
 		dataRecordSpiderToRestConverter.toRest();
 	}
@@ -81,13 +81,13 @@ public class DataRecordSpiderToRestConverterTest {
 	public void testToRestWithActionLinkNoId() {
 		spiderDataRecord.addAction(Action.READ);
 
-		SpiderDataGroup recordInfo = SpiderDataGroup.withNameInData("recordInfo");
-		SpiderDataGroup type = SpiderDataGroup.withNameInData("type");
-		type.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
-		type.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", "place"));
+		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
+		DataGroup type = DataGroup.withNameInData("type");
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
+		type.addChild(DataAtomic.withNameInDataAndValue("linkedRecordId", "place"));
 		recordInfo.addChild(type);
 
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("createdBy", "userId"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
 		spiderDataGroup.addChild(recordInfo);
 
 		dataRecordSpiderToRestConverter.toRest();
@@ -97,9 +97,9 @@ public class DataRecordSpiderToRestConverterTest {
 	public void testToRestWithActionLinkNoType() {
 		spiderDataRecord.addAction(Action.READ);
 
-		SpiderDataGroup recordInfo = SpiderDataGroup.withNameInData("recordInfo");
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("id", "place:0001"));
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("createdBy", "userId"));
+		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "place:0001"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
 		spiderDataGroup.addChild(recordInfo);
 
 		dataRecordSpiderToRestConverter.toRest();
@@ -133,15 +133,14 @@ public class DataRecordSpiderToRestConverterTest {
 		assertEquals(factoredActionsConverter.actionLinks, restDataRecord.getActionLinks());
 	}
 
-	private SpiderDataGroup createRecordInfo(String type) {
-		SpiderDataGroup recordInfo = SpiderDataGroup.withNameInData("recordInfo");
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("id", "place:0001"));
-		SpiderDataGroup typeGroup = SpiderDataGroup.withNameInData("type");
-		typeGroup.addChild(
-				SpiderDataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
-		typeGroup.addChild(SpiderDataAtomic.withNameInDataAndValue("linkedRecordId", type));
+	private DataGroup createRecordInfo(String type) {
+		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "place:0001"));
+		DataGroup typeGroup = DataGroup.withNameInData("type");
+		typeGroup.addChild(DataAtomic.withNameInDataAndValue("linkedRecordType", "recordType"));
+		typeGroup.addChild(DataAtomic.withNameInDataAndValue("linkedRecordId", type));
 		recordInfo.addChild(typeGroup);
-		recordInfo.addChild(SpiderDataAtomic.withNameInDataAndValue("createdBy", "userId"));
+		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
 		return recordInfo;
 	}
 

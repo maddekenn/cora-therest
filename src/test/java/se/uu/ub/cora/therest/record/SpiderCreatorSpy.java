@@ -22,7 +22,6 @@ package se.uu.ub.cora.therest.record;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.spider.authorization.AuthorizationException;
-import se.uu.ub.cora.spider.data.SpiderDataRecord;
 import se.uu.ub.cora.spider.record.DataException;
 import se.uu.ub.cora.spider.record.MisuseException;
 import se.uu.ub.cora.spider.record.SpiderRecordCreator;
@@ -56,7 +55,7 @@ public class SpiderCreatorSpy implements SpiderRecordCreator {
 		} else if ("place_unexpected_error".equals(type)) {
 			throw new NullPointerException("Some error");
 		}
-		return SpiderDataRecord.withDataGroup(
+		return DataRecord.withDataGroup(
 				DataCreator.createRecordWithNameInDataAndIdAndTypeAndLinkedRecordId("nameInData",
 						"someId", type, "linkedRecordId"));
 	}

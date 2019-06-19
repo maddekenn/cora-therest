@@ -24,7 +24,6 @@ import se.uu.ub.cora.data.DataElement;
 import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.data.DataRecordLink;
 import se.uu.ub.cora.data.DataResourceLink;
-import se.uu.ub.cora.spider.data.SpiderDataGroup;
 import se.uu.ub.cora.therest.data.RestDataElement;
 import se.uu.ub.cora.therest.data.RestDataGroup;
 import se.uu.ub.cora.therest.data.converter.ConverterInfo;
@@ -77,7 +76,7 @@ public class DataGroupSpiderToRestConverter implements SpiderToRestConverter {
 							(DataResourceLink) spiderDataElement, convertInfo)
 					.toRest();
 		}
-		if (spiderDataElement instanceof SpiderDataGroup) {
+		if (spiderDataElement instanceof DataGroup) {
 			return DataGroupSpiderToRestConverter.fromSpiderDataGroupWithDataGroupAndConverterInfo(
 					(DataGroup) spiderDataElement, convertInfo).toRest();
 		}
