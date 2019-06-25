@@ -36,19 +36,19 @@ public class DataResourceLinkSpiderToRestConverterTest {
 	private ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 			"http://localhost:8080/therest/rest/record/",
 			"http://localhost:8080/therest/rest/record/image/someImageId", "image", "someImageId");
-	private DataResourceLink spiderDataResourceLink;
+	private DataResourceLink dataResourceLink;
 	private DataResourceLinkSpiderToRestConverter dataResourceLinkSpiderToRestConverter;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataResourceLink = DataResourceLink.withNameInData("master");
+		dataResourceLink = DataResourceLink.withNameInData("master");
 
-		spiderDataResourceLink.addChild(DataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
-		spiderDataResourceLink
+		dataResourceLink.addChild(DataAtomic.withNameInDataAndValue("streamId", "aStreamId"));
+		dataResourceLink
 				.addChild(DataAtomic.withNameInDataAndValue("mimeType", "application/png"));
 
 		dataResourceLinkSpiderToRestConverter = DataResourceLinkSpiderToRestConverter
-				.fromSpiderDataResourceLinkWithConverterInfo(spiderDataResourceLink, converterInfo);
+				.fromDataResourceLinkWithConverterInfo(dataResourceLink, converterInfo);
 
 	}
 
@@ -65,7 +65,7 @@ public class DataResourceLinkSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithRepeatId() {
-		spiderDataResourceLink.setRepeatId("j");
+		dataResourceLink.setRepeatId("j");
 		RestDataResourceLink restDataResourceLink = dataResourceLinkSpiderToRestConverter.toRest();
 		assertEquals(restDataResourceLink.getNameInData(), "master");
 
@@ -78,7 +78,7 @@ public class DataResourceLinkSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithAction() {
-		spiderDataResourceLink.addAction(Action.READ);
+		dataResourceLink.addAction(Action.READ);
 		RestDataResourceLink restDataResourceLink = dataResourceLinkSpiderToRestConverter.toRest();
 		assertEquals(restDataResourceLink.getNameInData(), "master");
 

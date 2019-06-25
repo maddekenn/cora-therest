@@ -30,23 +30,23 @@ import se.uu.ub.cora.therest.data.RestDataResourceLink;
 import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public final class DataResourceLinkSpiderToRestConverter extends DataGroupSpiderToRestConverter {
-	private DataResourceLink spiderDataResourceLink;
+	private DataResourceLink dataResourceLink;
 	private RestDataResourceLink restDataResourceLink;
 
-	public static DataResourceLinkSpiderToRestConverter fromSpiderDataResourceLinkWithConverterInfo(
-			DataResourceLink spiderDataResourceLink, ConverterInfo converterInfo) {
-		return new DataResourceLinkSpiderToRestConverter(spiderDataResourceLink, converterInfo);
+	public static DataResourceLinkSpiderToRestConverter fromDataResourceLinkWithConverterInfo(
+			DataResourceLink dataResourceLink, ConverterInfo converterInfo) {
+		return new DataResourceLinkSpiderToRestConverter(dataResourceLink, converterInfo);
 	}
 
-	private DataResourceLinkSpiderToRestConverter(DataResourceLink spiderDataResourceLink,
+	private DataResourceLinkSpiderToRestConverter(DataResourceLink dataResourceLink,
 			ConverterInfo converterInfo) {
-		super(spiderDataResourceLink, converterInfo);
-		this.spiderDataResourceLink = spiderDataResourceLink;
+		super(dataResourceLink, converterInfo);
+		this.dataResourceLink = dataResourceLink;
 	}
 
 	@Override
 	protected RestDataGroup createNewRest() {
-		return RestDataResourceLink.withNameInData(spiderDataGroup.getNameInData());
+		return RestDataResourceLink.withNameInData(dataGroup.getNameInData());
 	}
 
 	@Override
@@ -58,10 +58,10 @@ public final class DataResourceLinkSpiderToRestConverter extends DataGroupSpider
 	}
 
 	private void createRestLinks() {
-		String url = convertInfo.recordURL + "/" + spiderDataResourceLink.getNameInData();
-		String mimeType = spiderDataResourceLink.getFirstAtomicValueWithNameInData("mimeType");
+		String url = convertInfo.recordURL + "/" + dataResourceLink.getNameInData();
+		String mimeType = dataResourceLink.getFirstAtomicValueWithNameInData("mimeType");
 		Map<String, ActionLink> actionLinks = new LinkedHashMap<>();
-		for (Action action : spiderDataResourceLink.getActions()) {
+		for (Action action : dataResourceLink.getActions()) {
 			ActionLink actionLink = ActionLink.withAction(action);
 
 			actionLink.setRequestMethod("GET");

@@ -31,56 +31,56 @@ import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 public class DataGroupSpiderToRestConverter implements SpiderToRestConverter {
 
 	private RestDataGroup restDataGroup;
-	protected DataGroup spiderDataGroup;
+	protected DataGroup dataGroup;
 	protected ConverterInfo convertInfo;
 
-	protected DataGroupSpiderToRestConverter(DataGroup spiderDataGroup,
+	protected DataGroupSpiderToRestConverter(DataGroup dataGroup,
 			ConverterInfo converterInfo) {
-		this.spiderDataGroup = spiderDataGroup;
+		this.dataGroup = dataGroup;
 		this.convertInfo = converterInfo;
 	}
 
-	public static DataGroupSpiderToRestConverter fromSpiderDataGroupWithDataGroupAndConverterInfo(
-			DataGroup spiderDataGroup, ConverterInfo converterInfo) {
-		return new DataGroupSpiderToRestConverter(spiderDataGroup, converterInfo);
+	public static DataGroupSpiderToRestConverter fromDataGroupWithDataGroupAndConverterInfo(
+			DataGroup dataGroup, ConverterInfo converterInfo) {
+		return new DataGroupSpiderToRestConverter(dataGroup, converterInfo);
 	}
 
 	@Override
 	public RestDataGroup toRest() {
 		restDataGroup = createNewRest();
-		restDataGroup.getAttributes().putAll(spiderDataGroup.getAttributes());
-		restDataGroup.setRepeatId(spiderDataGroup.getRepeatId());
+		restDataGroup.getAttributes().putAll(dataGroup.getAttributes());
+		restDataGroup.setRepeatId(dataGroup.getRepeatId());
 		convertAndSetChildren();
 		return restDataGroup;
 	}
 
 	protected RestDataGroup createNewRest() {
-		return RestDataGroup.withNameInData(spiderDataGroup.getNameInData());
+		return RestDataGroup.withNameInData(dataGroup.getNameInData());
 	}
 
 	private void convertAndSetChildren() {
-		for (DataElement spiderDataElement : spiderDataGroup.getChildren()) {
-			RestDataElement convertedChild = convertToElementEquivalentDataClass(spiderDataElement);
+		for (DataElement dataElement : dataGroup.getChildren()) {
+			RestDataElement convertedChild = convertToElementEquivalentDataClass(dataElement);
 			restDataGroup.getChildren().add(convertedChild);
 		}
 	}
 
-	private RestDataElement convertToElementEquivalentDataClass(DataElement spiderDataElement) {
-		if (spiderDataElement instanceof DataRecordLink) {
-			return DataRecordLinkSpiderToRestConverter.fromSpiderDataRecordLinkWithConverterInfo(
-					(DataRecordLink) spiderDataElement, convertInfo).toRest();
+	private RestDataElement convertToElementEquivalentDataClass(DataElement dataElement) {
+		if (dataElement instanceof DataRecordLink) {
+			return DataRecordLinkSpiderToRestConverter.fromDataRecordLinkWithConverterInfo(
+					(DataRecordLink) dataElement, convertInfo).toRest();
 		}
-		if (spiderDataElement instanceof DataResourceLink) {
+		if (dataElement instanceof DataResourceLink) {
 			return DataResourceLinkSpiderToRestConverter
-					.fromSpiderDataResourceLinkWithConverterInfo(
-							(DataResourceLink) spiderDataElement, convertInfo)
+					.fromDataResourceLinkWithConverterInfo(
+							(DataResourceLink) dataElement, convertInfo)
 					.toRest();
 		}
-		if (spiderDataElement instanceof DataGroup) {
-			return DataGroupSpiderToRestConverter.fromSpiderDataGroupWithDataGroupAndConverterInfo(
-					(DataGroup) spiderDataElement, convertInfo).toRest();
+		if (dataElement instanceof DataGroup) {
+			return DataGroupSpiderToRestConverter.fromDataGroupWithDataGroupAndConverterInfo(
+					(DataGroup) dataElement, convertInfo).toRest();
 		}
-		return DataAtomicSpiderToRestConverter.fromSpiderDataAtomic((DataAtomic) spiderDataElement)
+		return DataAtomicSpiderToRestConverter.fromDataAtomic((DataAtomic) dataElement)
 				.toRest();
 	}
 }

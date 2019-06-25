@@ -36,17 +36,17 @@ public class DataListSpiderToRestConverterTest {
 
 	@Test
 	public void testToRest() {
-		DataGroup spiderDataGroup = DataGroup.withNameInData("groupId");
-		spiderDataGroup.addChild(createRecordInfo());
-		DataRecord spiderDataRecord = DataRecord.withDataGroup(spiderDataGroup);
-		DataList spiderDataList = DataList.withContainDataOfType("place");
-		spiderDataList.addData(spiderDataRecord);
-		spiderDataList.setTotalNo("10");
-		spiderDataList.setFromNo("1");
-		spiderDataList.setToNo("1");
+		DataGroup dataGroup = DataGroup.withNameInData("groupId");
+		dataGroup.addChild(createRecordInfo());
+		DataRecord dataRecord = DataRecord.withDataGroup(dataGroup);
+		DataList dataList = DataList.withContainDataOfType("place");
+		dataList.addData(dataRecord);
+		dataList.setTotalNo("10");
+		dataList.setFromNo("1");
+		dataList.setToNo("1");
 
 		DataListSpiderToRestConverter converter = DataListSpiderToRestConverter
-				.fromSpiderDataListWithBaseURL(spiderDataList, baseURL);
+				.fromDataListWithBaseURL(dataList, baseURL);
 
 		RestDataList recordList = converter.toRest();
 
@@ -73,16 +73,16 @@ public class DataListSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithGroup() {
-		DataGroup spiderDataGroup = DataGroup.withNameInData("groupId");
-		spiderDataGroup.addChild(createRecordInfo());
-		DataList spiderDataList = DataList.withContainDataOfType("place");
-		spiderDataList.addData(spiderDataGroup);
-		spiderDataList.setTotalNo("10");
-		spiderDataList.setFromNo("1");
-		spiderDataList.setToNo("1");
+		DataGroup dataGroup = DataGroup.withNameInData("groupId");
+		dataGroup.addChild(createRecordInfo());
+		DataList dataList = DataList.withContainDataOfType("place");
+		dataList.addData(dataGroup);
+		dataList.setTotalNo("10");
+		dataList.setFromNo("1");
+		dataList.setToNo("1");
 
 		DataListSpiderToRestConverter converter = DataListSpiderToRestConverter
-				.fromSpiderDataListWithBaseURL(spiderDataList, baseURL);
+				.fromDataListWithBaseURL(dataList, baseURL);
 
 		RestDataList recordList = converter.toRest();
 

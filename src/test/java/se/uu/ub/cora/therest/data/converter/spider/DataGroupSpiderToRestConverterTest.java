@@ -45,14 +45,14 @@ public class DataGroupSpiderToRestConverterTest {
 			"http://localhost:8080/therest/rest/record/someRecordType/someRecordId",
 			"someRecordType", "someRecordId");
 
-	private DataGroup spiderDataGroup;
+	private DataGroup dataGroup;
 	private DataGroupSpiderToRestConverter dataGroupSpiderToRestConverter;
 
 	@BeforeMethod
 	public void beforeMethod() {
-		spiderDataGroup = DataGroup.withNameInData("nameInData");
+		dataGroup = DataGroup.withNameInData("nameInData");
 		dataGroupSpiderToRestConverter = DataGroupSpiderToRestConverter
-				.fromSpiderDataGroupWithDataGroupAndConverterInfo(spiderDataGroup, converterInfo);
+				.fromDataGroupWithDataGroupAndConverterInfo(dataGroup, converterInfo);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithRepeatId() {
-		spiderDataGroup.setRepeatId("2");
+		dataGroup.setRepeatId("2");
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		assertEquals(restDataGroup.getNameInData(), "nameInData");
 		assertEquals(restDataGroup.getRepeatId(), "2");
@@ -71,7 +71,7 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithAttributes() {
-		spiderDataGroup.addAttributeByIdWithValue("attributeNameInData", "attributeValue");
+		dataGroup.addAttributeByIdWithValue("attributeNameInData", "attributeValue");
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		String attributeId = restDataGroup.getAttributes().keySet().iterator().next();
 		String attributeValue = restDataGroup.getAttributes().get(attributeId);
@@ -80,7 +80,7 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithAtomicChild() {
-		spiderDataGroup
+		dataGroup
 				.addChild(DataAtomic.withNameInDataAndValue("childNameInData", "atomicValue"));
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		RestDataAtomic restDataAtomic = (RestDataAtomic) restDataGroup.getChildren().iterator()
@@ -101,7 +101,7 @@ public class DataGroupSpiderToRestConverterTest {
 				"someRecordId");
 		dataRecordLink.addChild(linkedRecordIdChild);
 
-		spiderDataGroup.addChild(dataRecordLink);
+		dataGroup.addChild(dataRecordLink);
 
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		RestDataRecordLink restDataRecordLink = (RestDataRecordLink) restDataGroup.getChildren()
@@ -119,7 +119,7 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithResourceLinkChild() {
-		spiderDataGroup.addChild(DataCreator.createResourceLinkMaster());
+		dataGroup.addChild(DataCreator.createResourceLinkMaster());
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		RestDataElement restMaster = restDataGroup.getFirstChildWithNameInData("master");
 		assertTrue((RestDataResourceLink) restMaster instanceof RestDataResourceLink);
@@ -127,7 +127,7 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithGroupChild() {
-		spiderDataGroup.addChild(DataGroup.withNameInData("childNameInData"));
+		dataGroup.addChild(DataGroup.withNameInData("childNameInData"));
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		RestDataGroup restDataGroupChild = (RestDataGroup) restDataGroup.getChildren().iterator()
 				.next();
@@ -136,11 +136,11 @@ public class DataGroupSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithGroupLevelsOfChildren() {
-		spiderDataGroup
+		dataGroup
 				.addChild(DataAtomic.withNameInDataAndValue("atomicNameInData", "atomicValue"));
 		DataGroup dataGroup2 = DataGroup.withNameInData("childNameInData");
 		dataGroup2.addChild(DataGroup.withNameInData("grandChildNameInData"));
-		spiderDataGroup.addChild(dataGroup2);
+		dataGroup.addChild(dataGroup2);
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		Iterator<RestDataElement> iterator = restDataGroup.getChildren().iterator();
 		Assert.assertTrue(iterator.hasNext(), "dataGroupRest should have at least one child");

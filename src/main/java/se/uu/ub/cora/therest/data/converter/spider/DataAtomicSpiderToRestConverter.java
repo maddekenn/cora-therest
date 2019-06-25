@@ -24,21 +24,21 @@ import se.uu.ub.cora.therest.data.RestDataAtomic;
 
 public final class DataAtomicSpiderToRestConverter {
 
-	private DataAtomic spiderDataAtomic;
+	private DataAtomic dataAtomic;
 
-	private DataAtomicSpiderToRestConverter(DataAtomic spiderDataAtomic) {
-		this.spiderDataAtomic = spiderDataAtomic;
+	private DataAtomicSpiderToRestConverter(DataAtomic dataAtomic) {
+		this.dataAtomic = dataAtomic;
 	}
 
-	public static DataAtomicSpiderToRestConverter fromSpiderDataAtomic(
-			DataAtomic spiderDataAtomic) {
-		return new DataAtomicSpiderToRestConverter(spiderDataAtomic);
+	public static DataAtomicSpiderToRestConverter fromDataAtomic(
+			DataAtomic dataAtomic) {
+		return new DataAtomicSpiderToRestConverter(dataAtomic);
 	}
 
 	public RestDataAtomic toRest() {
 		RestDataAtomic restDataAtomic = RestDataAtomic.withNameInDataAndValue(
-				spiderDataAtomic.getNameInData(), spiderDataAtomic.getValue());
-		restDataAtomic.setRepeatId(spiderDataAtomic.getRepeatId());
+				dataAtomic.getNameInData(), dataAtomic.getValue());
+		restDataAtomic.setRepeatId(dataAtomic.getRepeatId());
 		return restDataAtomic;
 	}
 

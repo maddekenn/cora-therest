@@ -31,7 +31,7 @@ import se.uu.ub.cora.therest.data.converter.ConverterException;
 
 public final class DataGroupRestToSpiderConverter {
 	private RestDataGroup restDataGroup;
-	private DataGroup spiderDataGroup;
+	private DataGroup dataGroup;
 
 	public static DataGroupRestToSpiderConverter fromRestDataGroup(RestDataGroup restDataGroup) {
 		return new DataGroupRestToSpiderConverter(restDataGroup);
@@ -51,27 +51,27 @@ public final class DataGroupRestToSpiderConverter {
 	}
 
 	private DataGroup tryToSpiderate() {
-		spiderDataGroup = DataGroup.withNameInData(restDataGroup.getNameInData());
-		spiderDataGroup.setRepeatId(restDataGroup.getRepeatId());
-		addAttributesToSpiderGroup();
-		addChildrenToSpiderGroup();
-		return spiderDataGroup;
+		dataGroup = DataGroup.withNameInData(restDataGroup.getNameInData());
+		dataGroup.setRepeatId(restDataGroup.getRepeatId());
+		addAttributesToDataGroup();
+		addChildrenToDataGroup();
+		return dataGroup;
 	}
 
-	private void addAttributesToSpiderGroup() {
+	private void addAttributesToDataGroup() {
 		Map<String, String> attributes = restDataGroup.getAttributes();
 		for (Entry<String, String> entry : attributes.entrySet()) {
-			spiderDataGroup.addAttributeByIdWithValue(entry.getKey(), entry.getValue());
+			dataGroup.addAttributeByIdWithValue(entry.getKey(), entry.getValue());
 		}
 	}
 
-	private void addChildrenToSpiderGroup() {
+	private void addChildrenToDataGroup() {
 		for (RestDataElement restDataElement : restDataGroup.getChildren()) {
-			addChildToSpiderGroup(restDataElement);
+			addChildToDataGroup(restDataElement);
 		}
 	}
 
-	private void addChildToSpiderGroup(RestDataElement restDataElement) {
+	private void addChildToDataGroup(RestDataElement restDataElement) {
 		if (restDataElement instanceof RestDataGroup) {
 			addGroupChild(restDataElement);
 		} else {
@@ -80,15 +80,15 @@ public final class DataGroupRestToSpiderConverter {
 	}
 
 	private void addGroupChild(RestDataElement restDataElement) {
-		DataGroup spiderDataGroupChild = DataGroupRestToSpiderConverter
+		DataGroup dataGroupChild = DataGroupRestToSpiderConverter
 				.fromRestDataGroup((RestDataGroup) restDataElement).toSpider();
-		spiderDataGroup.addChild(spiderDataGroupChild);
+		dataGroup.addChild(dataGroupChild);
 	}
 
 	private void addAtomicChild(RestDataElement restDataElement) {
-		DataAtomic spiderDataAtomic = DataAtomicRestToSpiderConverter
+		DataAtomic dataAtomic = DataAtomicRestToSpiderConverter
 				.fromRestDataAtomic((RestDataAtomic) restDataElement).toSpider();
-		spiderDataGroup.addChild(spiderDataAtomic);
+		dataGroup.addChild(dataAtomic);
 	}
 
 }

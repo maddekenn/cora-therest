@@ -40,11 +40,11 @@ public class SpiderRecordReaderSpy implements SpiderRecordReader {
 		this.id = id;
 		possiblyThrowExceptionForRead(authToken, id);
 
-		DataRecord spiderDataGroup = DataRecord.withDataGroup(
+		DataRecord dataGroup = DataRecord.withDataGroup(
 				DataCreator.createRecordWithNameInDataAndIdAndTypeAndLinkedRecordId("nameInData",
 						id, type, "linkedRecordId"));
-		spiderDataGroup.addAction(Action.READ);
-		return spiderDataGroup;
+		dataGroup.addAction(Action.READ);
+		return dataGroup;
 	}
 
 	private void possiblyThrowExceptionForRead(String authToken, String id) {

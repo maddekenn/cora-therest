@@ -28,14 +28,14 @@ import se.uu.ub.cora.data.DataAtomic;
 import se.uu.ub.cora.therest.data.RestDataAtomic;
 
 public class DataAtomicSpiderToRestConverterTest {
-	private DataAtomic spiderDataAtomic;
+	private DataAtomic dataAtomic;
 	private DataAtomicSpiderToRestConverter atomicSpiderToRestConverter;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataAtomic = DataAtomic.withNameInDataAndValue("nameInData", "value");
+		dataAtomic = DataAtomic.withNameInDataAndValue("nameInData", "value");
 		atomicSpiderToRestConverter = DataAtomicSpiderToRestConverter
-				.fromSpiderDataAtomic(spiderDataAtomic);
+				.fromDataAtomic(dataAtomic);
 
 	}
 
@@ -48,7 +48,7 @@ public class DataAtomicSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithRepeatId() {
-		spiderDataAtomic.setRepeatId("e4");
+		dataAtomic.setRepeatId("e4");
 		RestDataAtomic restDataAtomic = atomicSpiderToRestConverter.toRest();
 		assertEquals(restDataAtomic.getNameInData(), "nameInData");
 		assertEquals(restDataAtomic.getValue(), "value");

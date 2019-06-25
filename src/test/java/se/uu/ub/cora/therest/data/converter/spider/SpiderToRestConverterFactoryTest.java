@@ -34,15 +34,15 @@ public class SpiderToRestConverterFactoryTest {
 
 	@Test
 	public void testFactorForDataGroup() {
-		DataGroup spiderDataGroup = DataGroup.withNameInData("someDataGroup");
+		DataGroup dataGroup = DataGroup.withNameInData("someDataGroup");
 		ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 				"someBaseUrl", "someRecordUrl", "someRecordType", "someRecordId");
 		SpiderToRestConverterFactory factory = new SpiderToRestConverterFactoryImp();
 		DataGroupSpiderToRestConverter converter = (DataGroupSpiderToRestConverter) factory
-				.factorForSpiderDataGroupWithConverterInfo(spiderDataGroup, converterInfo);
+				.factorForDataGroupWithConverterInfo(dataGroup, converterInfo);
 
 		assertEquals(converter.convertInfo.baseURL, "someBaseUrl");
-		assertSame(converter.spiderDataGroup, spiderDataGroup);
+		assertSame(converter.dataGroup, dataGroup);
 	}
 
 	@Test
@@ -51,15 +51,15 @@ public class SpiderToRestConverterFactoryTest {
 		Action action = Action.READ;
 		actions.add(action);
 
-		DataGroup spiderDataGroup = DataGroup.withNameInData("someDataGroup");
+		DataGroup dataGroup = DataGroup.withNameInData("someDataGroup");
 		ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(
 				"someBaseUrl", "someRecordUrl", "someRecordType", "someRecordId");
 		SpiderToRestConverterFactory factory = new SpiderToRestConverterFactoryImp();
 		ActionSpiderToRestConverterImp converter = (ActionSpiderToRestConverterImp) factory
 				.factorForActionsUsingConverterInfoAndDataGroup(actions, converterInfo,
-						spiderDataGroup);
+						dataGroup);
 
-		assertSame(converter.getDataGroup(), spiderDataGroup);
+		assertSame(converter.getDataGroup(), dataGroup);
 		assertSame(converter.getConverterInfo(), converterInfo);
 		assertSame(converter.getActions(), actions);
 	}

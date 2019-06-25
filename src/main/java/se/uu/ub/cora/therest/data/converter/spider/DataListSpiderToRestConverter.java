@@ -30,55 +30,55 @@ import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public final class DataListSpiderToRestConverter {
 
-	private DataList spiderDataList;
+	private DataList dataList;
 	private String baseURL;
 
-	public static DataListSpiderToRestConverter fromSpiderDataListWithBaseURL(
-			DataList spiderDataList, String url) {
-		return new DataListSpiderToRestConverter(spiderDataList, url);
+	public static DataListSpiderToRestConverter fromDataListWithBaseURL(
+			DataList dataList, String url) {
+		return new DataListSpiderToRestConverter(dataList, url);
 	}
 
-	private DataListSpiderToRestConverter(DataList spiderDataList, String url) {
-		this.spiderDataList = spiderDataList;
+	private DataListSpiderToRestConverter(DataList dataList, String url) {
+		this.dataList = dataList;
 		this.baseURL = url;
 	}
 
 	public RestDataList toRest() {
 		RestDataList restDataList = RestDataList
-				.withContainDataOfType(spiderDataList.getContainDataOfType());
+				.withContainDataOfType(dataList.getContainDataOfType());
 
-		restDataList.setTotalNo(spiderDataList.getTotalNumberOfTypeInStorage());
-		restDataList.setFromNo(spiderDataList.getFromNo());
-		restDataList.setToNo(spiderDataList.getToNo());
+		restDataList.setTotalNo(dataList.getTotalNumberOfTypeInStorage());
+		restDataList.setFromNo(dataList.getFromNo());
+		restDataList.setToNo(dataList.getToNo());
 
-		for (Data spiderData : spiderDataList.getDataList()) {
-			convertSpiderDataToRest(restDataList, spiderData);
+		for (Data data : dataList.getDataList()) {
+			convertDataToRest(restDataList, data);
 		}
 		return restDataList;
 	}
 
-	private void convertSpiderDataToRest(RestDataList restDataList, Data spiderData) {
-		if (spiderData instanceof DataRecord) {
-			convertSpiderRecordToRest(restDataList, (DataRecord) spiderData);
+	private void convertDataToRest(RestDataList restDataList, Data data) {
+		if (data instanceof DataRecord) {
+			convertSpiderRecordToRest(restDataList, (DataRecord) data);
 		} else {
-			convertSpiderGroupToRest(restDataList, (DataGroup) spiderData);
+			convertSpiderGroupToRest(restDataList, (DataGroup) data);
 		}
 	}
 
-	private void convertSpiderRecordToRest(RestDataList restDataList, DataRecord spiderData) {
+	private void convertSpiderRecordToRest(RestDataList restDataList, DataRecord data) {
 		SpiderToRestConverterFactory converterFactory = new SpiderToRestConverterFactoryImp();
 		RestDataRecord restRecord = DataRecordSpiderToRestConverter
-				.fromSpiderDataRecordWithBaseURLAndConverterFactory(spiderData, baseURL,
+				.fromDataRecordWithBaseURLAndConverterFactory(data, baseURL,
 						converterFactory)
 				.toRest();
 		restDataList.addData(restRecord);
 	}
 
-	private void convertSpiderGroupToRest(RestDataList restDataList, DataGroup spiderData) {
+	private void convertSpiderGroupToRest(RestDataList restDataList, DataGroup data) {
 		ConverterInfo converterInfo = ConverterInfo.withBaseURLAndRecordURLAndTypeAndId(baseURL, "",
 				"", "");
 		RestDataGroup restGroup = DataGroupSpiderToRestConverter
-				.fromSpiderDataGroupWithDataGroupAndConverterInfo(spiderData, converterInfo)
+				.fromDataGroupWithDataGroupAndConverterInfo(data, converterInfo)
 				.toRest();
 		restDataList.addData(restGroup);
 	}

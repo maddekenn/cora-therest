@@ -28,26 +28,23 @@ import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public final class DataRecordSpiderToRestConverter {
 
-	private DataRecord spiderDataRecord;
-	// private SpiderDataRecord spiderDataRecord;
+	private DataRecord dataRecord;
 	private String baseURL;
-	// private SpiderDataGroup spiderDataGroup;
-	private DataGroup spiderDataGroup;
+	private DataGroup dataGroup;
 	private RestDataRecord restDataRecord;
 	private String recordId;
 	private String recordType;
 	private ConverterInfo converterInfo;
 	private SpiderToRestConverterFactory converterFactory;
 
-	public static DataRecordSpiderToRestConverter fromSpiderDataRecordWithBaseURLAndConverterFactory(
-			DataRecord spiderDataRecord, String url,
-			SpiderToRestConverterFactory converterFactory) {
-		return new DataRecordSpiderToRestConverter(spiderDataRecord, url, converterFactory);
+	public static DataRecordSpiderToRestConverter fromDataRecordWithBaseURLAndConverterFactory(
+			DataRecord dataRecord, String url, SpiderToRestConverterFactory converterFactory) {
+		return new DataRecordSpiderToRestConverter(dataRecord, url, converterFactory);
 	}
 
-	private DataRecordSpiderToRestConverter(DataRecord spiderDataRecord, String url,
+	private DataRecordSpiderToRestConverter(DataRecord dataRecord, String url,
 			SpiderToRestConverterFactory converterFactory) {
-		this.spiderDataRecord = spiderDataRecord;
+		this.dataRecord = dataRecord;
 		this.baseURL = url;
 		this.converterFactory = converterFactory;
 	}
@@ -61,7 +58,7 @@ public final class DataRecordSpiderToRestConverter {
 	}
 
 	private RestDataRecord convertToRest() {
-		spiderDataGroup = spiderDataRecord.getDataGroup();
+		dataGroup = dataRecord.getDataGroup();
 		extractIdAndType();
 		createConverterInfo();
 
@@ -77,7 +74,7 @@ public final class DataRecordSpiderToRestConverter {
 	}
 
 	private void extractIdAndType() {
-		DataGroup recordInfo = spiderDataGroup.getFirstGroupWithNameInData("recordInfo");
+		DataGroup recordInfo = dataGroup.getFirstGroupWithNameInData("recordInfo");
 		recordId = recordInfo.getFirstAtomicValueWithNameInData("id");
 		DataGroup typeGroup = recordInfo.getFirstGroupWithNameInData("type");
 		recordType = typeGroup.getFirstAtomicValueWithNameInData("linkedRecordId");
@@ -91,29 +88,29 @@ public final class DataRecordSpiderToRestConverter {
 
 	private void convertToRestRecord() {
 		SpiderToRestConverter dataGroupSpiderToRestConverter = converterFactory
-				.factorForSpiderDataGroupWithConverterInfo(spiderDataGroup, converterInfo);
+				.factorForDataGroupWithConverterInfo(dataGroup, converterInfo);
 		RestDataGroup restDataGroup = dataGroupSpiderToRestConverter.toRest();
 		restDataRecord = RestDataRecord.withRestDataGroup(restDataGroup);
 	}
 
 	private boolean hasActions() {
-		return !spiderDataRecord.getActions().isEmpty();
+		return !dataRecord.getActions().isEmpty();
 	}
 
 	private void createRestLinks() {
 		ActionSpiderToRestConverter actionSpiderToRestConverter = converterFactory
-				.factorForActionsUsingConverterInfoAndDataGroup(spiderDataRecord.getActions(),
-						converterInfo, spiderDataGroup);
+				.factorForActionsUsingConverterInfoAndDataGroup(dataRecord.getActions(),
+						converterInfo, dataGroup);
 
 		restDataRecord.setActionLinks(actionSpiderToRestConverter.toRest());
 	}
 
 	private boolean hasKeys() {
-		return !spiderDataRecord.getKeys().isEmpty();
+		return !dataRecord.getKeys().isEmpty();
 	}
 
 	private void convertKeys() {
-		for (String string : spiderDataRecord.getKeys()) {
+		for (String string : dataRecord.getKeys()) {
 			restDataRecord.addKey(string);
 		}
 	}

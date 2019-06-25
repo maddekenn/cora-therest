@@ -24,14 +24,15 @@ import se.uu.ub.cora.therest.data.RestDataGroup;
 public class SpiderToRestConverterSpy implements SpiderToRestConverter {
 
 	public boolean toRestWasCalled = false;
+	public RestDataGroup restDataGroup;
 
 	@Override
 	public RestDataGroup toRest() {
 
 		toRestWasCalled = true;
-		RestDataGroup dataGroup = RestDataGroup.withNameInData("someNameInData");
-		dataGroup.addChild(createRecordInfo("place"));
-		return dataGroup;
+		restDataGroup = RestDataGroup.withNameInData("someNameInData");
+		restDataGroup.addChild(createRecordInfo("place"));
+		return restDataGroup;
 	}
 
 	private RestDataGroup createRecordInfo(String type) {

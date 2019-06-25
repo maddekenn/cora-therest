@@ -26,10 +26,10 @@ import se.uu.ub.cora.therest.data.converter.ConverterInfo;
 
 public interface SpiderToRestConverterFactory {
 
-	SpiderToRestConverter factorForSpiderDataGroupWithConverterInfo(DataGroup spiderDataGroup,
+	SpiderToRestConverter factorForDataGroupWithConverterInfo(DataGroup dataGroup,
 			ConverterInfo converterInfo);
 
 	ActionSpiderToRestConverter factorForActionsUsingConverterInfoAndDataGroup(List<Action> actions,
-			ConverterInfo converterInfo, DataGroup spiderDataGroup);
+			ConverterInfo converterInfo, DataGroup dataGroup);
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Uppsala University Library
+ * Copyright 2015, 2019 Uppsala University Library
  *
  * This file is part of Cora.
  *
@@ -40,17 +40,17 @@ public class DataAtomicRestToSpiderConverterTest {
 
 	@Test
 	public void testToSpider() {
-		DataAtomic spiderDataAtomic = converter.toSpider();
-		assertEquals(spiderDataAtomic.getNameInData(), "nameInData");
-		assertEquals(spiderDataAtomic.getValue(), "value");
+		DataAtomic dataAtomic = converter.toSpider();
+		assertEquals(dataAtomic.getNameInData(), "nameInData");
+		assertEquals(dataAtomic.getValue(), "value");
 	}
 
 	@Test
 	public void testToSpiderWithRepeatId() {
 		restDataAtomic.setRepeatId("x3");
-		DataAtomic spiderDataAtomic = converter.toSpider();
-		assertEquals(spiderDataAtomic.getNameInData(), "nameInData");
-		assertEquals(spiderDataAtomic.getValue(), "value");
-		assertEquals(spiderDataAtomic.getRepeatId(), "x3");
+		DataAtomic dataAtomic = converter.toSpider();
+		assertEquals(dataAtomic.getNameInData(), "nameInData");
+		assertEquals(dataAtomic.getValue(), "value");
+		assertEquals(dataAtomic.getRepeatId(), "x3");
 	}
 }

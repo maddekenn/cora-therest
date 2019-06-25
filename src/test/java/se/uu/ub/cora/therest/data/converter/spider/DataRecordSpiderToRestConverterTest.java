@@ -32,30 +32,31 @@ import se.uu.ub.cora.data.DataGroup;
 import se.uu.ub.cora.data.DataRecord;
 import se.uu.ub.cora.therest.data.RestDataRecord;
 import se.uu.ub.cora.therest.data.converter.ConverterException;
+import se.uu.ub.cora.therest.testdata.DataCreator;
 
 public class DataRecordSpiderToRestConverterTest {
 	private String baseURL = "http://localhost:8080/therest/rest/record/";
-	private DataGroup spiderDataGroup;
-	private DataRecord spiderDataRecord;
+	private DataGroup dataGroup;
+	private DataRecord dataRecord;
 	private DataRecordSpiderToRestConverter dataRecordSpiderToRestConverter;
 	private SpiderToRestConverterFactorySpy converterFactory;
 
 	@BeforeMethod
 	public void setUp() {
-		spiderDataGroup = DataGroup.withNameInData("someNameInData");
-		spiderDataRecord = DataRecord.withDataGroup(spiderDataGroup);
+		dataGroup = DataGroup.withNameInData("someNameInData");
+		dataRecord = DataRecord.withDataGroup(dataGroup);
 		converterFactory = new SpiderToRestConverterFactorySpy();
 		dataRecordSpiderToRestConverter = DataRecordSpiderToRestConverter
-				.fromSpiderDataRecordWithBaseURLAndConverterFactory(spiderDataRecord, baseURL,
+				.fromDataRecordWithBaseURLAndConverterFactory(dataRecord, baseURL,
 						converterFactory);
 	}
 
 	@Test
 	public void testToRest() {
-		spiderDataGroup.addChild(createRecordInfo("place"));
+		dataGroup.addChild(createRecordInfo("place"));
 		dataRecordSpiderToRestConverter.toRest();
 
-		assertSame(converterFactory.dataGroups.get(0), spiderDataGroup);
+		assertSame(converterFactory.dataGroups.get(0), dataGroup);
 		assertSame(converterFactory.converterInfos.get(0).baseURL, baseURL);
 		assertEquals(converterFactory.converterInfos.get(0).recordURL,
 				baseURL + "place/place:0001");
@@ -66,20 +67,20 @@ public class DataRecordSpiderToRestConverterTest {
 
 	@Test(expectedExceptions = ConverterException.class)
 	public void testToRestWithActionLinkNoRecordInfoButOtherChild() {
-		spiderDataGroup.addChild(DataAtomic.withNameInDataAndValue("type", "place"));
-		spiderDataRecord.addAction(Action.READ);
+		dataGroup.addChild(DataAtomic.withNameInDataAndValue("type", "place"));
+		dataRecord.addAction(Action.READ);
 		dataRecordSpiderToRestConverter.toRest();
 	}
 
 	@Test(expectedExceptions = ConverterException.class)
 	public void testToRestWithActionLinkNoRecordInfo() {
-		spiderDataRecord.addAction(Action.READ);
+		dataRecord.addAction(Action.READ);
 		dataRecordSpiderToRestConverter.toRest();
 	}
 
 	@Test(expectedExceptions = ConverterException.class)
 	public void testToRestWithActionLinkNoId() {
-		spiderDataRecord.addAction(Action.READ);
+		dataRecord.addAction(Action.READ);
 
 		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
 		DataGroup type = DataGroup.withNameInData("type");
@@ -88,35 +89,35 @@ public class DataRecordSpiderToRestConverterTest {
 		recordInfo.addChild(type);
 
 		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
-		spiderDataGroup.addChild(recordInfo);
+		dataGroup.addChild(recordInfo);
 
 		dataRecordSpiderToRestConverter.toRest();
 	}
 
 	@Test(expectedExceptions = ConverterException.class)
 	public void testToRestWithActionLinkNoType() {
-		spiderDataRecord.addAction(Action.READ);
+		dataRecord.addAction(Action.READ);
 
 		DataGroup recordInfo = DataGroup.withNameInData("recordInfo");
 		recordInfo.addChild(DataAtomic.withNameInDataAndValue("id", "place:0001"));
 		recordInfo.addChild(DataAtomic.withNameInDataAndValue("createdBy", "userId"));
-		spiderDataGroup.addChild(recordInfo);
+		dataGroup.addChild(recordInfo);
 
 		dataRecordSpiderToRestConverter.toRest();
 	}
 
 	@Test
 	public void testToRestActionLinksSentToConverter() {
-		spiderDataRecord.addAction(Action.READ);
-		spiderDataRecord.addAction(Action.CREATE);
-		spiderDataRecord.addAction(Action.DELETE);
+		dataRecord.addAction(Action.READ);
+		dataRecord.addAction(Action.CREATE);
+		dataRecord.addAction(Action.DELETE);
 
-		spiderDataGroup.addChild(createRecordInfo("place"));
+		dataGroup.addChild(createRecordInfo("place"));
 
 		RestDataRecord restDataRecord = dataRecordSpiderToRestConverter.toRest();
 
-		assertSame(converterFactory.dataGroups.get(0), spiderDataGroup);
-		assertSame(converterFactory.dataGroups.get(1), spiderDataGroup);
+		assertSame(converterFactory.dataGroups.get(0), dataGroup);
+		assertSame(converterFactory.dataGroups.get(1), dataGroup);
 		assertSame(converterFactory.converterInfos.get(1).baseURL, baseURL);
 		assertEquals(converterFactory.converterInfos.get(1).recordURL,
 				baseURL + "place/place:0001");
@@ -146,14 +147,14 @@ public class DataRecordSpiderToRestConverterTest {
 
 	@Test
 	public void testToRestWithActionLinkSEARCHWhenRecordTypeIsRecordType() {
-		spiderDataRecord.addAction(Action.READ);
+		dataRecord.addAction(Action.READ);
 
-		spiderDataGroup.addChild(createRecordInfo("recordType"));
+		dataGroup.addChild(createRecordInfo("recordType"));
 
 		RestDataRecord restDataRecord = dataRecordSpiderToRestConverter.toRest();
 
-		assertSame(converterFactory.dataGroups.get(0), spiderDataGroup);
-		assertSame(converterFactory.dataGroups.get(1), spiderDataGroup);
+		assertSame(converterFactory.dataGroups.get(0), dataGroup);
+		assertSame(converterFactory.dataGroups.get(1), dataGroup);
 		assertSame(converterFactory.converterInfos.get(1).baseURL, baseURL);
 		assertEquals(converterFactory.converterInfos.get(1).recordURL,
 				baseURL + "recordType/place:0001");
@@ -168,38 +169,30 @@ public class DataRecordSpiderToRestConverterTest {
 		assertEquals(factoredActionsConverter.actionLinks, restDataRecord.getActionLinks());
 	}
 
-	// TODO: Ändra detta efter användning av factory för actions
-	// @Test
-	// public void testToRestWithResourceLink() {
-	// spiderDataGroup.addChild(createRecordInfo("place"));
-	// spiderDataGroup.addChild(DataCreator.createResourceLinkMaster());
-	//
-	// RestDataRecord restDataRecord = dataRecordSpiderToRestConverter.toRest();
-	//
-	// assertSame(converterFactory.dataGroups.get(0), spiderDataGroup);
-	// assertSame(converterFactory.dataGroups.get(1), spiderDataGroup);
-	// assertSame(converterFactory.converterInfos.get(1).baseURL, baseURL);
-	// assertEquals(converterFactory.converterInfos.get(1).recordURL,
-	// baseURL + "recordType/place:0001");
-	//
-	// assertTrue(converterFactory.addedActions.contains(Action.READ));
-	// assertEquals(converterFactory.addedActions.size(), 1);
+	@Test
+	public void testToRestWithResourceLink() {
+		dataGroup.addChild(createRecordInfo("place"));
+		dataGroup.addChild(DataCreator.createResourceLinkMaster());
 
-	// RestDataGroup restDataGroup = restDataRecord.getRestDataGroup();
-	// RestDataResourceLink restMaster = (RestDataResourceLink) restDataGroup
-	// .getFirstChildWithNameInData("master");
-	// ActionLink actionLink = restMaster.getActionLink("read");
-	// assertEquals(actionLink.getAction(), Action.READ);
-	// assertEquals(actionLink.getURL(),
-	// "http://localhost:8080/therest/rest/record/place/place:0001/master");
-	// assertEquals(actionLink.getRequestMethod(), "GET");
-	// }
+		RestDataRecord restDataRecord = dataRecordSpiderToRestConverter.toRest();
+
+		assertSame(converterFactory.dataGroups.get(0), dataGroup);
+		assertSame(converterFactory.converterInfos.get(0).baseURL, baseURL);
+		assertEquals(converterFactory.converterInfos.get(0).recordURL,
+				baseURL + "place/place:0001");
+
+		SpiderToRestConverterSpy factoredConverter = converterFactory.factoredSpiderToRestConverters
+				.get(0);
+		assertTrue(factoredConverter.toRestWasCalled);
+		assertSame(restDataRecord.getRestDataGroup(), factoredConverter.restDataGroup);
+
+	}
 
 	@Test
 	public void testToRestWithKeys() {
-		spiderDataGroup.addChild(createRecordInfo("place"));
+		dataGroup.addChild(createRecordInfo("place"));
 
-		spiderDataRecord.addKey("KEY1");
+		dataRecord.addKey("KEY1");
 
 		RestDataRecord restDataRecord = dataRecordSpiderToRestConverter.toRest();
 		String key = restDataRecord.getKeys().iterator().next();

@@ -34,9 +34,9 @@ public class SpiderToRestConverterFactorySpy implements SpiderToRestConverterFac
 	public List<ActionSpiderToRestConverterSpy> factoredActionsToRestConverters = new ArrayList<>();
 
 	@Override
-	public SpiderToRestConverter factorForSpiderDataGroupWithConverterInfo(
-			DataGroup spiderDataGroup, ConverterInfo converterInfo) {
-		dataGroups.add(spiderDataGroup);
+	public SpiderToRestConverter factorForDataGroupWithConverterInfo(
+			DataGroup dataGroup, ConverterInfo converterInfo) {
+		dataGroups.add(dataGroup);
 		converterInfos.add(converterInfo);
 		SpiderToRestConverterSpy converter = new SpiderToRestConverterSpy();
 		factoredSpiderToRestConverters.add(converter);
@@ -46,9 +46,9 @@ public class SpiderToRestConverterFactorySpy implements SpiderToRestConverterFac
 
 	@Override
 	public ActionSpiderToRestConverter factorForActionsUsingConverterInfoAndDataGroup(
-			List<Action> actions, ConverterInfo converterInfo, DataGroup spiderDataGroup) {
+			List<Action> actions, ConverterInfo converterInfo, DataGroup dataGroup) {
 		addedActions.addAll(actions);
-		dataGroups.add(spiderDataGroup);
+		dataGroups.add(dataGroup);
 		converterInfos.add(converterInfo);
 		ActionSpiderToRestConverterSpy converter = new ActionSpiderToRestConverterSpy();
 		factoredActionsToRestConverters.add(converter);
